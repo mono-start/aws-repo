@@ -1,0 +1,28 @@
+server:
+  port: 5000
+spring:
+  datasource:
+    url: jdbc:postgresql://hazarathdb.c72m4c68s2cs.us-east-2.rds.amazonaws.com:5432/postgres
+    #url: jdbc:postgresql://localhost:5432/rms_db
+    username: postgres
+    password: postgres
+    #driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: rms_db
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  sql:
+    init:
+      mode: embedded
+  docker:
+    compose:
+     enabled: false
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui/index.html

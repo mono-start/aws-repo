@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+
+	<Properties>
+		<Property name="LOG_LOC">/apps/logs</Property>
+		<Property name="MAX">10</Property>
+		<Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property>
+		<!--		<Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%X{traceId}] %p - %m%n</Property>-->
+	</Properties>
+
+	<Appenders>
+		<RollingFile name="FILE"
+					 fileName="${LOG_LOC}/rms-admin-services.log"
+					 filePattern="${LOG_LOC}/rms-admin-services-%d{yyyy-MM-dd}-%i.log">
+
+			<PatternLayout>
+				<Pattern>${LOG_PATTERN}</Pattern>
+			</PatternLayout>
+
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10MB" />
+			</Policies>
+
+			<DefaultRolloverStrategy max="${MAX}" />
+		</RollingFile>
+
+
+		<RollingFile name="errorLog"
+					 fileName="${LOG_LOC}/rms-admin-services-error.log"
+					 filePattern="${LOG_LOC}/rms-admin-services-error-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="ERROR" maxLevel="ERROR"
+							  onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+
+	</Appenders>
+
+	<Loggers>
+		<Logger name="com.rms" level="debug" additivity="false">
+
+			<AppenderRef ref="FILE" />
+			<AppenderRef ref="errorLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+
+		<Logger name="org.springframework.web" level="debug"
+				additivity="false" >
+			<appender-ref ref="FILE" />
+			<AppenderRef ref="errorLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+		<Logger name="file" level="info" additivity="false">
+			<appender-ref ref="FILE" />
+			<AppenderRef ref="errorLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+		<Root level="warn">
+			<AppenderRef ref="FILE" />
+			<AppenderRef ref="Console" />
+		</Root>
+	</Loggers>
+
+</Configuration>
